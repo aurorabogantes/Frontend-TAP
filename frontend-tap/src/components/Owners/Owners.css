@@ -1,0 +1,131 @@
+.owners-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.owners-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #17a2b8;
+  padding-bottom: 10px;
+}
+
+.owners-info {
+  background: #e7f3ff;
+  border: 1px solid #b8daff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.owners-info p {
+  margin: 0;
+  color: #004085;
+}
+
+.airplanes-list {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.airplanes-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.airplanes-list th,
+.airplanes-list td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.airplanes-list th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.airplanes-list tr:hover {
+  background-color: #f5f5f5;
+}
+
+.airline-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  background-color: #28a745;
+  color: white;
+}
+
+.airline-badge.no-airline {
+  background-color: #6c757d;
+}
+
+.summary {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+  text-align: right;
+}
+
+.summary p {
+  margin: 0;
+  color: #666;
+}
+
+.btn-refresh {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-refresh:hover {
+  background-color: #138496;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.error {
+  text-align: center;
+  padding: 40px;
+  color: #dc3545;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error button {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
