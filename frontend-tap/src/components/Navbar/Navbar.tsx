@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router-dom';
+import { FaPlane } from 'react-icons/fa';
 import './Navbar.css';
 
 function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <h1>✈️ Gestión de Aviones</h1>
+        <h1><FaPlane className="brand-icon" /> Gestión de Aviones</h1>
       </div>
       <ul className="navbar-nav">
         <li>

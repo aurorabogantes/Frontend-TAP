@@ -1,3 +1,4 @@
+import { FaPlaneDeparture, FaUsers } from 'react-icons/fa';
 import './Home.css';
 
 function HomePage() {
@@ -10,7 +11,7 @@ function HomePage() {
       
       <div className="features-grid">
         <div className="feature-card">
-          <div className="feature-icon">🛫</div>
+          <div className="feature-icon"><FaPlaneDeparture /></div>
           <h3>Aerolíneas</h3>
           <p>Gestiona las aerolíneas registradas en el sistema</p>
           <ul>
@@ -21,7 +22,7 @@ function HomePage() {
         </div>
         
         <div className="feature-card">
-          <div className="feature-icon">👥</div>
+          <div className="feature-icon"><FaUsers /></div>
           <h3>Propietarios</h3>
           <p>Visualiza los aviones y sus propietarios actuales</p>
           <ul>
