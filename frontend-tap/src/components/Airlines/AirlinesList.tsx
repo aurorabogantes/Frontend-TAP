@@ -8,6 +8,8 @@ interface AirlinesListProps {
   refreshTrigger?: number;
 }
 
+const ITEMS_PER_PAGE = 3;
+
 function AirlinesList({ onSelectAirline, refreshTrigger }: AirlinesListProps) {
   const [airlines, setAirlines] = useState<Airline[]>([]);
   const [loading, setLoading] = useState(true);
@@ -15,6 +17,12 @@ function AirlinesList({ onSelectAirline, refreshTrigger }: AirlinesListProps) {
   const [searchName, setSearchName] = useState('');
   const [searchPhone, setSearchPhone] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Cálculos de paginación
+  const totalPages = Math.ceil(airlines.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedAirlines = airlines.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   useEffect(() => {
     loadAirlines();
@@ -25,6 +33,7 @@ function AirlinesList({ onSelectAirline, refreshTrigger }: AirlinesListProps) {
       setLoading(true);
       setError(null);
       setIsSearching(false);
+      setCurrentPage(1);
       const data = await getAirlines();
       setAirlines(data);
     } catch (err) {
@@ -45,6 +54,7 @@ function AirlinesList({ onSelectAirline, refreshTrigger }: AirlinesListProps) {
       setLoading(true);
       setError(null);
       setIsSearching(true);
+      setCurrentPage(1);
       const data = await searchAirlines(
         searchName.trim() || undefined,
         searchPhone.trim() || undefined
@@ -124,7 +134,7 @@ function AirlinesList({ onSelectAirline, refreshTrigger }: AirlinesListProps) {
           </tr>
         </thead>
         <tbody>
-          {airlines.map((airline) => (
+          {paginatedAirlines.map((airline) => (
             <tr key={airline.id}>
               <td>{airline.id}</td>
               <td>{airline.name || '-'}</td>
@@ -141,6 +151,42 @@ function AirlinesList({ onSelectAirline, refreshTrigger }: AirlinesListProps) {
           ))}
         </tbody>
       </table>
+
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            className="pagination-btn"
+            onClick={() => setCurrentPage(1)}
+            disabled={currentPage === 1}
+          >
+            &laquo;
+          </button>
+          <button
+            className="pagination-btn"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            &lsaquo;
+          </button>
+          <span className="pagination-info">
+            Página {currentPage} de {totalPages} ({airlines.length} registros)
+          </span>
+          <button
+            className="pagination-btn"
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            &rsaquo;
+          </button>
+          <button
+            className="pagination-btn"
+            onClick={() => setCurrentPage(totalPages)}
+            disabled={currentPage === totalPages}
+          >
+            &raquo;
+          </button>
+        </div>
+      )}
     </div>
   );
 }
