@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Airline } from '../../types';
-import { getAirlines } from '../../services/api';
+import { getAirlines, searchAirlines } from '../../services/api';
 import './Airlines.css';
 
 interface AirlinesListProps {
@@ -12,6 +12,9 @@ function AirlinesList({ onSelectAirline, refreshTrigger }: AirlinesListProps) {
   const [airlines, setAirlines] = useState<Airline[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchName, setSearchName] = useState('');
+  const [searchPhone, setSearchPhone] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     loadAirlines();
@@ -21,6 +24,7 @@ function AirlinesList({ onSelectAirline, refreshTrigger }: AirlinesListProps) {
     try {
       setLoading(true);
       setError(null);
+      setIsSearching(false);
       const data = await getAirlines();
       setAirlines(data);
     } catch (err) {
@@ -29,6 +33,35 @@ function AirlinesList({ onSelectAirline, refreshTrigger }: AirlinesListProps) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSearch = async () => {
+    if (!searchName.trim() && !searchPhone.trim()) {
+      loadAirlines();
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      setIsSearching(true);
+      const data = await searchAirlines(
+        searchName.trim() || undefined,
+        searchPhone.trim() || undefined
+      );
+      setAirlines(data);
+    } catch (err) {
+      setError('Error al buscar aerolíneas');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchName('');
+    setSearchPhone('');
+    loadAirlines();
   };
 
   if (loading) {
@@ -51,6 +84,36 @@ function AirlinesList({ onSelectAirline, refreshTrigger }: AirlinesListProps) {
   return (
     <div className="airlines-list">
       <h3>Lista de Aerolíneas</h3>
+      
+      <div className="search-section">
+        <div className="search-inputs">
+          <input
+            type="text"
+            placeholder="Buscar por nombre..."
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          />
+          <input
+            type="text"
+            placeholder="Buscar por teléfono..."
+            value={searchPhone}
+            onChange={(e) => setSearchPhone(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          />
+        </div>
+        <div className="search-buttons">
+          <button onClick={handleSearch} className="btn-search">
+            Buscar
+          </button>
+          {isSearching && (
+            <button onClick={handleClearSearch} className="btn-clear">
+              Limpiar
+            </button>
+          )}
+        </div>
+      </div>
+
       <table>
         <thead>
           <tr>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Airline, AirlineFormData } from '../../types';
-import { updateAirline } from '../../services/api';
+import { updateAirline, getAirlineById } from '../../services/api';
 import './Airlines.css';
 
 interface AirlineEditProps {
@@ -19,13 +19,31 @@ function AirlineEdit({ airline, onSuccess, onCancel }: AirlineEditProps) {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    setFormData({
-      name: airline.name || '',
-      phone: airline.phone || '',
-    });
-    setError(null);
-    setSuccess(false);
-  }, [airline]);
+    // Cargar datos frescos del servidor usando getAirlineById
+    const loadAirlineData = async () => {
+      try {
+        setLoading(true);
+        const freshData = await getAirlineById(airline.id);
+        setFormData({
+          name: freshData.name || '',
+          phone: freshData.phone || '',
+        });
+        setError(null);
+        setSuccess(false);
+      } catch (err) {
+        // Si falla, usar los datos que ya tenemos
+        setFormData({
+          name: airline.name || '',
+          phone: airline.phone || '',
+        });
+        console.error('Error al cargar datos frescos:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAirlineData();
+  }, [airline.id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
