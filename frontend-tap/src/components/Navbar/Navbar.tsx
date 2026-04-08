@@ -20,6 +20,11 @@ function Navbar() {
           </NavLink>
         </li>
         <li>
+          <NavLink to="/airplanes" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            Aviones
+          </NavLink>
+        </li>
+        <li>
           <NavLink to="/owners" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
             Propietarios
           </NavLink>
