@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { HomePage } from './components/Home';
 import { AirlinesPage } from './components/Airlines';
+import { AirplanesPage } from './components/Airplanes';
 import { OwnersPage } from './components/Owners';
 import './App.css';
 
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/airlines" element={<AirlinesPage />} />
+            <Route path="/airplanes" element={<AirplanesPage />} />
             <Route path="/owners" element={<OwnersPage />} />
           </Routes>
         </main>

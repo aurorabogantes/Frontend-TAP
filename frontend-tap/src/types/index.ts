@@ -22,3 +22,8 @@ export interface AirlineFormData {
   name: string;
   phone: string;
 }
+
+export interface AirplaneFormData {
+  model: string;
+  airlineId: number;
+}

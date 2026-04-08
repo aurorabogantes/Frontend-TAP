@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Airline, AirlineFormData, Airplane } from '../types';
+import type { Airline, AirlineFormData, Airplane, AirplaneFormData } from '../types';
 
 // En desarrollo, usa el proxy de Vite. En producción, usa la URL completa.
 const API_BASE_URL = '/api';
@@ -63,6 +63,18 @@ export const getAirplaneById = async (id: number): Promise<Airplane> => {
 // Get airplanes by airline ID
 export const getAirplanesByAirline = async (airlineId: number): Promise<Airplane[]> => {
   const response = await api.get<Airplane[]>(`/Airplanes/by-airline/${airlineId}`);
+  return response.data;
+};
+
+// Create new airplane
+export const createAirplane = async (data: AirplaneFormData): Promise<Airplane> => {
+  const response = await api.post<Airplane>('/Airplanes', data);
+  return response.data;
+};
+
+// Update airplane
+export const updateAirplane = async (id: number, data: AirplaneFormData): Promise<Airplane> => {
+  const response = await api.put<Airplane>(`/Airplanes/${id}`, { id, ...data });
   return response.data;
 };
 
