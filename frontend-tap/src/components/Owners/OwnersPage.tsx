@@ -1,12 +1,21 @@
 import { useState, useEffect } from 'react';
-import type { Airline, AirplaneWithAirline } from '../../types';
-import { getAirplanes, getAirlines } from '../../services/api';
+import type { Airline, AirplaneWithAirline, Airplane } from '../../types';
+import { getAirplanes, getAirlines, updateAirplane } from '../../services/api';
 import './Owners.css';
 
 function OwnersPage() {
   const [airplanesWithAirlines, setAirplanesWithAirlines] = useState<AirplaneWithAirline[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  
+  const [selectedAirplane, setSelectedAirplane] = useState<Airplane | null>(null);
+  const [airlines, setAirlines] = useState<Airline[]>([]);
+  const [editLoading, setEditLoading] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
+  const [editSuccess, setEditSuccess] = useState(false);
+  const [newAirlineId, setNewAirlineId] = useState<number>(0);
+  
 
   useEffect(() => {
     loadData();
@@ -18,14 +27,14 @@ function OwnersPage() {
       setError(null);
       
       // Fetch both airplanes and airlines in parallel
-      const [airplanes, airlines] = await Promise.all([
+      const [airplanes, airlinesData] = await Promise.all([
         getAirplanes(),
         getAirlines(),
       ]);
       
       // Create a map for quick airline lookup
       const airlinesMap = new Map<number, Airline>();
-      airlines.forEach((airline) => {
+      airlinesData.forEach((airline) => {
         airlinesMap.set(airline.id, airline);
       });
       
@@ -39,6 +48,7 @@ function OwnersPage() {
       });
       
       setAirplanesWithAirlines(combined);
+      setAirlines(airlinesData);
     } catch (err) {
       setError('Error al cargar los datos');
       console.error(err);
@@ -46,6 +56,51 @@ function OwnersPage() {
       setLoading(false);
     }
   };
+
+  
+  const handleSelectAirplane = (airplane: Airplane) => {
+    setSelectedAirplane(airplane);
+    setNewAirlineId(airplane.airlineId);
+    setEditError(null);
+    setEditSuccess(false);
+  };
+
+  const handleCancelEdit = () => {
+    setSelectedAirplane(null);
+    setNewAirlineId(0);
+    setEditError(null);
+    setEditSuccess(false);
+  };
+
+  const handleUpdateAirplane = async () => {
+    if (!selectedAirplane) return;
+
+    if (newAirlineId === 0) {
+      setEditError('Debe seleccionar una aerolínea');
+      return;
+    }
+
+    try {
+      setEditLoading(true);
+      setEditError(null);
+      setEditSuccess(false);
+      
+      await updateAirplane(selectedAirplane.id, {
+        model: selectedAirplane.model || '',
+        airlineId: newAirlineId,
+      });
+
+      setEditSuccess(true);
+      handleCancelEdit();
+      loadData();
+    } catch (err) {
+      setEditError('Error al actualizar el propietario del avión');
+      console.error(err);
+    } finally {
+      setEditLoading(false);
+    }
+  };
+  
 
   if (loading) {
     return (
@@ -89,6 +144,7 @@ function OwnersPage() {
                 <th>ID Avión</th>
                 <th>Modelo</th>
                 <th>Aerolínea Actual (Propietario)</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -101,6 +157,14 @@ function OwnersPage() {
                       {airplane.airlineName}
                     </span>
                   </td>
+                  <td>
+                    <button 
+                      className="btn-edit"
+                      onClick={() => handleSelectAirplane(airplane)}
+                    >
+                      Editar
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -111,6 +175,53 @@ function OwnersPage() {
           </div>
         </div>
       )}
+      
+      
+      {selectedAirplane && (
+        <div className="airplane-edit-form">
+          <h3>Editar Propietario del Avión</h3>
+          <div className="form-info">
+            <p><strong>ID Avión:</strong> {selectedAirplane.id}</p>
+            <p><strong>Modelo:</strong> {selectedAirplane.model || '-'}</p>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="newAirline">Nueva Aerolínea Propietaria:</label>
+            <select
+              id="newAirline"
+              value={newAirlineId}
+              onChange={(e) => setNewAirlineId(parseInt(e.target.value, 10))}
+              disabled={editLoading}
+            >
+              <option value={0}>Seleccione una aerolínea</option>
+              {airlines.map((airline) => (
+                <option key={airline.id} value={airline.id}>
+                  {airline.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {editError && <div className="error-message">{editError}</div>}
+          {editSuccess && <div className="success-message">Propietario actualizado exitosamente</div>}
+
+          <button 
+            className="btn-submit" 
+            onClick={handleUpdateAirplane}
+            disabled={editLoading}
+          >
+            {editLoading ? 'Guardando...' : 'Guardar Cambios'}
+          </button>
+          <button 
+            className="btn-cancel" 
+            onClick={handleCancelEdit}
+            disabled={editLoading}
+          >
+            Cancelar
+          </button>
+        </div>
+      )}
+      
       
       <button className="btn-refresh" onClick={loadData}>
         Actualizar Lista
