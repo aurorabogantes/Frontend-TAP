@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Airline, AirplaneWithAirline, Airplane } from '../../types';
 import { getAirplanes, getAirlines, updateAirplane } from '../../services/api';
+import { FaEdit, FaPlane, FaBuilding, FaArrowRight, FaExclamationTriangle, FaCheckCircle, FaSave, FaTimes } from 'react-icons/fa';
 import './Owners.css';
 
 function OwnersPage() {
@@ -178,47 +179,109 @@ function OwnersPage() {
       
       
       {selectedAirplane && (
-        <div className="airplane-edit-form">
-          <h3>Editar Propietario del Avión</h3>
-          <div className="form-info">
-            <p><strong>ID Avión:</strong> {selectedAirplane.id}</p>
-            <p><strong>Modelo:</strong> {selectedAirplane.model || '-'}</p>
+        <div className="modal-overlay" onClick={handleCancelEdit}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3><FaEdit className="header-icon" /> Cambiar Propietario</h3>
+              <button className="modal-close" onClick={handleCancelEdit} disabled={editLoading}>
+                <FaTimes />
+              </button>
+            </div>
+            
+            <div className="modal-body">
+              {/* Tarjeta del avión */}
+              <div className="airplane-card">
+                <div className="airplane-icon"><FaPlane /></div>
+                <div className="airplane-details">
+                  <span className="airplane-model">{selectedAirplane.model || 'Sin modelo'}</span>
+                  <span className="airplane-id">ID: {selectedAirplane.id}</span>
+                </div>
+              </div>
+
+              {/* Sección de transferencia */}
+              <div className="transfer-section">
+                <div className="transfer-from">
+                  <span className="transfer-label">Propietario actual</span>
+                  <div className="airline-card current">
+                    <span className="airline-icon"><FaBuilding /></span>
+                    <span className="airline-name">
+                      {airlines.find(a => a.id === selectedAirplane.airlineId)?.name || 'Sin aerolínea'}
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="transfer-arrow"><FaArrowRight /></div>
+                
+                <div className="transfer-to">
+                  <span className="transfer-label">Nuevo propietario</span>
+                  <div className={`airline-card new ${newAirlineId && newAirlineId !== selectedAirplane.airlineId ? 'selected' : ''}`}>
+                    <span className="airline-icon"><FaBuilding /></span>
+                    <span className="airline-name">
+                      {newAirlineId ? (airlines.find(a => a.id === newAirlineId)?.name || 'Seleccione...') : 'Seleccione...'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Selector de aerolínea */}
+              <div className="form-group">
+                <label htmlFor="newAirline">Seleccionar nueva aerolínea:</label>
+                <select
+                  id="newAirline"
+                  value={newAirlineId}
+                  onChange={(e) => setNewAirlineId(parseInt(e.target.value, 10))}
+                  disabled={editLoading}
+                  className="airline-select"
+                >
+                  <option value={0}>-- Seleccione una aerolínea --</option>
+                  {airlines.map((airline) => (
+                    <option 
+                      key={airline.id} 
+                      value={airline.id}
+                      disabled={airline.id === selectedAirplane.airlineId}
+                    >
+                      {airline.name} {airline.id === selectedAirplane.airlineId ? '(actual)' : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Mensajes de estado */}
+              {editError && (
+                <div className="message error-message">
+                  <span className="message-icon"><FaExclamationTriangle /></span>
+                  {editError}
+                </div>
+              )}
+              {editSuccess && (
+                <div className="message success-message">
+                  <span className="message-icon"><FaCheckCircle /></span>
+                  Propietario actualizado exitosamente
+                </div>
+              )}
+            </div>
+
+            <div className="modal-footer">
+              <button 
+                className="btn-cancel" 
+                onClick={handleCancelEdit}
+                disabled={editLoading}
+              >
+                Cancelar
+              </button>
+              <button 
+                className="btn-submit" 
+                onClick={handleUpdateAirplane}
+                disabled={editLoading || newAirlineId === 0 || newAirlineId === selectedAirplane.airlineId}
+              >
+                {editLoading ? (
+                  <><span className="spinner"></span> Guardando...</>
+                ) : (
+                  <><FaSave /> Guardar Cambios</>
+                )}
+              </button>
+            </div>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="newAirline">Nueva Aerolínea Propietaria:</label>
-            <select
-              id="newAirline"
-              value={newAirlineId}
-              onChange={(e) => setNewAirlineId(parseInt(e.target.value, 10))}
-              disabled={editLoading}
-            >
-              <option value={0}>Seleccione una aerolínea</option>
-              {airlines.map((airline) => (
-                <option key={airline.id} value={airline.id}>
-                  {airline.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {editError && <div className="error-message">{editError}</div>}
-          {editSuccess && <div className="success-message">Propietario actualizado exitosamente</div>}
-
-          <button 
-            className="btn-submit" 
-            onClick={handleUpdateAirplane}
-            disabled={editLoading}
-          >
-            {editLoading ? 'Guardando...' : 'Guardar Cambios'}
-          </button>
-          <button 
-            className="btn-cancel" 
-            onClick={handleCancelEdit}
-            disabled={editLoading}
-          >
-            Cancelar
-          </button>
         </div>
       )}
       
