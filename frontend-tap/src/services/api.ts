@@ -1,8 +1,10 @@
 import axios from 'axios';
 import type { Airline, AirlineFormData, Airplane, AirplaneFormData } from '../types';
 
-// En desarrollo, usa el proxy de Vite. En producción, usa la URL completa.
-const API_BASE_URL = '/api';
+// En desarrollo usa el proxy de Vite (/api), en producción usa la URL del backend
+const API_BASE_URL = import.meta.env.DEV 
+  ? '/api' 
+  : 'https://gestiondeavionesapi-grcwcze3ema9bpfc.canadacentral-01.azurewebsites.net/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
