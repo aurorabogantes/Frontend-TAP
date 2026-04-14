@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import type { Airline, AirplaneWithAirline, Airplane } from '../../types';
 import { getAirplanes, getAirlines, updateAirplane } from '../../services/api';
-import { FaEdit, FaPlane, FaBuilding, FaArrowRight, FaExclamationTriangle, FaCheckCircle, FaSave, FaTimes } from 'react-icons/fa';
+import { FaEdit, FaPlane, FaBuilding, FaArrowRight, FaExclamationTriangle, FaCheckCircle, FaSave, FaTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Owners.css';
+
+const ITEMS_PER_PAGE = 5;
 
 function OwnersPage() {
   const [airplanesWithAirlines, setAirplanesWithAirlines] = useState<AirplaneWithAirline[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   
   
   const [selectedAirplane, setSelectedAirplane] = useState<Airplane | null>(null);
@@ -16,6 +19,11 @@ function OwnersPage() {
   const [editError, setEditError] = useState<string | null>(null);
   const [editSuccess, setEditSuccess] = useState(false);
   const [newAirlineId, setNewAirlineId] = useState<number>(0);
+
+  // Cálculos de paginación
+  const totalPages = Math.ceil(airplanesWithAirlines.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedAirplanes = airplanesWithAirlines.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   
 
   useEffect(() => {
@@ -50,6 +58,7 @@ function OwnersPage() {
       
       setAirplanesWithAirlines(combined);
       setAirlines(airlinesData);
+      setCurrentPage(1);
     } catch (err) {
       setError('Error al cargar los datos');
       console.error(err);
@@ -149,7 +158,7 @@ function OwnersPage() {
               </tr>
             </thead>
             <tbody>
-              {airplanesWithAirlines.map((airplane) => (
+              {paginatedAirplanes.map((airplane) => (
                 <tr key={airplane.id}>
                   <td>{airplane.id}</td>
                   <td>{airplane.model || '-'}</td>
@@ -174,6 +183,28 @@ function OwnersPage() {
           <div className="summary">
             <p>Total de aviones: <strong>{airplanesWithAirlines.length}</strong></p>
           </div>
+
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button 
+                className="pagination-btn"
+                onClick={() => setCurrentPage(p => p - 1)} 
+                disabled={currentPage === 1}
+              >
+                <FaChevronLeft /> Anterior
+              </button>
+              <div className="pagination-info">
+                <span>Página <strong>{currentPage}</strong> de <strong>{totalPages}</strong></span>
+              </div>
+              <button 
+                className="pagination-btn"
+                onClick={() => setCurrentPage(p => p + 1)} 
+                disabled={currentPage === totalPages}
+              >
+                Siguiente <FaChevronRight />
+              </button>
+            </div>
+          )}
         </div>
       )}
       
