@@ -9,19 +9,23 @@ function AirplanesPage() {
   const [selectedAirplane, setSelectedAirplane] = useState<Airplane | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
+  // Guarda el avión seleccionado para mostrar el formulario de edición.
   const handleSelectAirplane = (airplane: Airplane) => {
     setSelectedAirplane(airplane);
   };
 
+  // Fuerza la recarga del listado cuando se crea un avión nuevo.
   const handleFormSuccess = () => {
     setRefreshTrigger((prev) => prev + 1);
   };
 
+  // Limpia la selección y refresca la lista después de editar un avión.
   const handleEditSuccess = () => {
     setSelectedAirplane(null);
     setRefreshTrigger((prev) => prev + 1);
   };
 
+  // Cancela la edición y regresa al formulario de registro.
   const handleCancelEdit = () => {
     setSelectedAirplane(null);
   };

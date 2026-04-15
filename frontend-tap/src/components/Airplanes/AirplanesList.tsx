@@ -7,8 +7,10 @@ interface AirplanesListProps {
   onSelectAirplane: (airplane: Airplane) => void;
   refreshTrigger?: number;
 }
+// Cantidad de aviones visibles por página.
 
 const ITEMS_PER_PAGE = 3;
+// Componente que carga, muestra y pagina el listado de aviones.
 
 function AirplanesList({ onSelectAirplane, refreshTrigger }: AirplanesListProps) {
   const [airplanes, setAirplanes] = useState<Airplane[]>([]);
@@ -17,14 +19,17 @@ function AirplanesList({ onSelectAirplane, refreshTrigger }: AirplanesListProps)
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Calcula qué registros se muestran en la página actual.
   const totalPages = Math.ceil(airplanes.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedAirplanes = airplanes.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
+  // Recarga el listado cada vez que cambia el indicador de refresco.
   useEffect(() => {
     loadData();
   }, [refreshTrigger]);
 
+  // Carga aviones y aerolíneas para mostrar el listado con el nombre asociado.
   const loadData = async () => {
     try {
       setLoading(true);
@@ -53,6 +58,7 @@ function AirplanesList({ onSelectAirplane, refreshTrigger }: AirplanesListProps)
     return <div className="loading">Cargando aviones...</div>;
   }
 
+  // Muestra un mensaje si hubo un problema al obtener la información.
   if (error) {
     return (
       <div className="error">
@@ -62,6 +68,7 @@ function AirplanesList({ onSelectAirplane, refreshTrigger }: AirplanesListProps)
     );
   }
 
+  // Indica al usuario que todavía no hay registros para mostrar.
   if (airplanes.length === 0) {
     return <div className="empty">No hay aviones registrados</div>;
   }

@@ -20,6 +20,7 @@ function AirplaneEdit({ airplane, onSuccess, onCancel }: AirplaneEditProps) {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
+    // Trae datos frescos del avión para evitar editar información desactualizada.
     const loadAirplaneData = async () => {
       try {
         setLoading(true);
@@ -39,6 +40,7 @@ function AirplaneEdit({ airplane, onSuccess, onCancel }: AirplaneEditProps) {
       }
     };
 
+    // Carga las aerolíneas para permitir cambiar el propietario.
     const fetchAirlines = async () => {
       try {
         const data = await getAirlines();
@@ -54,6 +56,7 @@ function AirplaneEdit({ airplane, onSuccess, onCancel }: AirplaneEditProps) {
     fetchAirlines();
   }, [airplane.id]);
 
+  // Sincroniza el formulario con los cambios hechos por el usuario.
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -62,6 +65,7 @@ function AirplaneEdit({ airplane, onSuccess, onCancel }: AirplaneEditProps) {
     }));
   };
 
+  // Valida los datos y guarda la edición del avión en la API.
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.model.trim()) {

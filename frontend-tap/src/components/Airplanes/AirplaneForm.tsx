@@ -18,6 +18,7 @@ function AirplaneForm({ onSuccess }: AirplaneFormProps) {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
+    // Obtiene las aerolíneas disponibles para asociar el avión nuevo.
     const fetchAirlines = async () => {
       try {
         const data = await getAirlines();
@@ -32,6 +33,7 @@ function AirplaneForm({ onSuccess }: AirplaneFormProps) {
     fetchAirlines();
   }, []);
 
+  // Actualiza el estado del formulario cuando el usuario escribe o cambia la aerolínea.
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -40,6 +42,7 @@ function AirplaneForm({ onSuccess }: AirplaneFormProps) {
     }));
   };
 
+  // Valida y envía el nuevo avión al API.
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
