@@ -3,19 +3,27 @@ import type { AirlineFormData } from '../../types';
 import { createAirline } from '../../services/api';
 import './Airlines.css';
 
+// Props: callback para notificar al padre cuando se crea exitosamente
 interface AirlineFormProps {
-  onSuccess: () => void;
+  onSuccess: () => void; // Se ejecuta después de crear la aerolínea para refrescar la lista
 }
 
+/**
+ * Componente de formulario para crear una nueva aerolínea.
+ * Contiene campos para nombre y teléfono con validación básica.
+ */
 function AirlineForm({ onSuccess }: AirlineFormProps) {
+  // Estado del formulario controlado
   const [formData, setFormData] = useState<AirlineFormData>({
     name: '',
     phone: '',
   });
+  // Estados de UI: indicador de carga, mensajes de error/éxito
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  // Manejador de cambios: actualiza el campo correspondiente según el atributo "name" del input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -24,9 +32,11 @@ function AirlineForm({ onSuccess }: AirlineFormProps) {
     }));
   };
 
+  // Manejador de envío: valida y crea la aerolínea en el servidor
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Previene recarga de página
     
+    // Validación: el nombre es obligatorio
     if (!formData.name.trim()) {
       setError('El nombre es requerido');
       return;
@@ -36,10 +46,10 @@ function AirlineForm({ onSuccess }: AirlineFormProps) {
       setLoading(true);
       setError(null);
       setSuccess(false);
-      await createAirline(formData);
+      await createAirline(formData); // Llama al API para crear la aerolínea
       setSuccess(true);
-      setFormData({ name: '', phone: '' });
-      onSuccess();
+      setFormData({ name: '', phone: '' }); // Limpia el formulario después de crear
+      onSuccess(); // Notifica al padre para refrescar la lista
     } catch (err) {
       setError('Error al crear la aerolínea');
       console.error(err);

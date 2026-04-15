@@ -1,3 +1,10 @@
+/* ====================================================
+   ESTILOS DEL MÓDULO DE PROPIETARIOS (OWNERS)
+   Incluye: contenedor, tabla de aviones, paginación,
+   modal de edición y visualización de transferencia
+   ==================================================== */
+
+/* ========== CONTENEDOR PRINCIPAL ========== */
 .owners-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -7,10 +14,11 @@
 .owners-container h2 {
   color: #333;
   margin-bottom: 20px;
-  border-bottom: 2px solid #17a2b8;
+  border-bottom: 2px solid #17a2b8; /* Línea cyan/teal bajo el título */
   padding-bottom: 10px;
 }
 
+/* Caja informativa sobre la página */
 .owners-info {
   background: #e7f3ff;
   border: 1px solid #b8daff;
@@ -24,6 +32,7 @@
   color: #004085;
 }
 
+/* ========== LISTA DE AVIONES ========== */
 .airplanes-list {
   background: #fff;
   border-radius: 8px;
@@ -54,20 +63,23 @@
   background-color: #f5f5f5;
 }
 
+/* Badge de aerolínea: muestra el propietario con estilo de etiqueta */
 .airline-badge {
   display: inline-block;
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: 20px; /* Pill shape */
   font-size: 13px;
   font-weight: 500;
-  background-color: #28a745;
+  background-color: #28a745; /* Verde = tiene propietario */
   color: white;
 }
 
+/* Badge gris cuando no tiene aerolínea asignada */
 .airline-badge.no-airline {
   background-color: #6c757d;
 }
 
+/* Resumen con total de registros */
 .summary {
   margin-top: 20px;
   padding-top: 15px;
@@ -80,7 +92,8 @@
   color: #666;
 }
 
-/* Paginación */
+/* ========== PAGINACIÓN ========== */
+/* Contenedor de controles de paginación centrado */
 .pagination {
   display: flex;
   justify-content: center;
@@ -91,6 +104,7 @@
   border-top: 1px solid #e9ecef;
 }
 
+/* Botones de paginación con gradiente y efectos hover */
 .pagination-btn {
   display: flex;
   align-items: center;
@@ -107,10 +121,11 @@
 }
 
 .pagination-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
+  transform: translateY(-2px); /* Efecto de elevación */
   box-shadow: 0 4px 12px rgba(23, 162, 184, 0.4);
 }
 
+/* Estado deshabilitado de botones de paginación */
 .pagination-btn:disabled {
   background: #dee2e6;
   cursor: not-allowed;
@@ -118,6 +133,7 @@
   box-shadow: none;
 }
 
+/* Indicador de página actual */
 .pagination-info {
   background: #f8f9fa;
   padding: 8px 16px;
@@ -126,6 +142,7 @@
   color: #495057;
 }
 
+/* Botón de actualizar lista */
 .btn-refresh {
   background-color: #17a2b8;
   color: white;
@@ -141,6 +158,7 @@
   background-color: #138496;
 }
 
+/* ========== ESTADOS DE CARGA Y ERROR ========== */
 .loading {
   text-align: center;
   padding: 40px;
@@ -176,7 +194,8 @@
   border-radius: 8px;
 }
 
-/* ========== MODAL STYLES ========== */
+/* ========== ESTILOS DEL MODAL DE EDICIÓN ========== */
+/* Overlay oscuro que cubre toda la pantalla */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -188,14 +207,16 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeIn 0.2s ease-out; /* Animación de entrada suave */
 }
 
+/* Animación de aparición del overlay */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
+/* Animación de entrada del contenido del modal */
 @keyframes slideIn {
   from { 
     opacity: 0;
@@ -207,16 +228,18 @@
   }
 }
 
+/* Contenedor principal del modal */
 .modal-content {
   background: #fff;
   border-radius: 16px;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); /* Sombra pronunciada para efecto de elevación */
   animation: slideIn 0.3s ease-out;
   overflow: hidden;
 }
 
+/* Encabezado del modal con gradiente */
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -239,6 +262,7 @@
   font-size: 1.1rem;
 }
 
+/* Botón circular de cerrar en el encabezado */
 .modal-close {
   background: rgba(255, 255, 255, 0.2);
   border: none;
@@ -269,7 +293,8 @@
   padding: 24px;
 }
 
-/* Tarjeta del avión */
+/* ========== TARJETA DEL AVIÓN SELECCIONADO ========== */
+/* Muestra información del avión que se está editando */
 .airplane-card {
   display: flex;
   align-items: center;
@@ -307,7 +332,8 @@
   color: #6c757d;
 }
 
-/* Sección de transferencia */
+/* ========== SECCIÓN DE TRANSFERENCIA ========== */
+/* Visualiza el cambio de propietario: aerolínea actual -> nueva */
 .transfer-section {
   display: flex;
   align-items: center;
@@ -319,12 +345,14 @@
   border-radius: 12px;
 }
 
+/* Columnas de origen y destino */
 .transfer-from,
 .transfer-to {
   flex: 1;
   text-align: center;
 }
 
+/* Etiqueta pequeña sobre cada tarjeta */
 .transfer-label {
   display: block;
   font-size: 0.75rem;
@@ -335,6 +363,7 @@
   font-weight: 600;
 }
 
+/* Flecha de dirección entre tarjetas */
 .transfer-arrow {
   font-size: 1.5rem;
   color: #17a2b8;
@@ -344,6 +373,7 @@
   justify-content: center;
 }
 
+/* Tarjeta de aerolínea (origen/destino) */
 .airline-card {
   display: flex;
   flex-direction: column;
@@ -356,16 +386,19 @@
   transition: all 0.3s ease;
 }
 
+/* Tarjeta de aerolínea actual (gris) */
 .airline-card.current {
   border-color: #6c757d;
   background: #f8f9fa;
 }
 
+/* Tarjeta de nueva aerolínea (borde punteado) */
 .airline-card.new {
   border-color: #dee2e6;
   border-style: dashed;
 }
 
+/* Tarjeta de nueva aerolínea cuando está seleccionada (verde) */
 .airline-card.new.selected {
   border-color: #28a745;
   border-style: solid;
@@ -396,7 +429,7 @@
   word-break: break-word;
 }
 
-/* Form styles */
+/* ========== FORMULARIO DENTRO DEL MODAL ========== */
 .modal-body .form-group {
   margin-bottom: 16px;
 }
@@ -409,6 +442,7 @@
   font-size: 0.9rem;
 }
 
+/* Select dropdown personalizado con flecha custom */
 .airline-select {
   width: 100%;
   padding: 12px 16px;
@@ -419,7 +453,8 @@
   color: #333;
   cursor: pointer;
   transition: all 0.2s;
-  appearance: none;
+  appearance: none; /* Quita flecha nativa del navegador */
+  /* Flecha custom usando SVG inline */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 16px center;
@@ -440,7 +475,7 @@
   cursor: not-allowed;
 }
 
-/* Mensajes de estado */
+/* ========== MENSAJES DE ESTADO EN EL MODAL ========== */
 .message {
   display: flex;
   align-items: center;
@@ -477,7 +512,8 @@
   color: #28a745;
 }
 
-/* Modal footer */
+/* ========== FOOTER DEL MODAL ========== */
+/* Contiene botones de Cancelar y Guardar */
 .modal-footer {
   display: flex;
   justify-content: flex-end;
@@ -487,6 +523,7 @@
   border-top: 1px solid #dee2e6;
 }
 
+/* Botón cancelar: estilo outline gris */
 .modal-footer .btn-cancel {
   background: #fff;
   color: #6c757d;
@@ -509,6 +546,7 @@
   cursor: not-allowed;
 }
 
+/* Botón guardar: gradiente verde con efecto hover */
 .modal-footer .btn-submit {
   background: linear-gradient(135deg, #28a745 0%, #218838 100%);
   color: #fff;
@@ -536,7 +574,8 @@
   box-shadow: none;
 }
 
-/* Spinner de carga */
+/* ========== SPINNER DE CARGA ========== */
+/* Animación circular mientras se guarda */
 .spinner {
   display: inline-block;
   width: 14px;
@@ -551,7 +590,8 @@
   to { transform: rotate(360deg); }
 }
 
-/* Botón editar en tabla */
+/* ========== BOTÓN EDITAR EN LA TABLA ========== */
+/* Botón azul con gradiente para abrir el modal */
 .btn-edit {
   background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
   color: white;

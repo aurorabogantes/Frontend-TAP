@@ -1,3 +1,10 @@
+/* ====================================================
+   ESTILOS DEL MÓDULO DE AEROLÍNEAS
+   Incluye: contenedor principal, lista, formularios,
+   botones, mensajes y estados
+   ==================================================== */
+
+/* ========== CONTENEDOR PRINCIPAL ========== */
 .airlines-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -7,11 +14,11 @@
 .airlines-container h2 {
   color: #333;
   margin-bottom: 20px;
-  border-bottom: 2px solid #007bff;
+  border-bottom: 2px solid #007bff; /* Línea azul bajo el título */
   padding-bottom: 10px;
 }
 
-/* Airlines List Styles */
+/* ========== ESTILOS DE LA LISTA DE AEROLÍNEAS ========== */
 .airlines-list {
   background: #fff;
   border-radius: 8px;
@@ -44,9 +51,10 @@
 }
 
 .airlines-list tr:hover {
-  background-color: #f5f5f5;
+  background-color: #f5f5f5; /* Highlight al pasar el mouse */
 }
 
+/* Botón de editar en la tabla */
 .btn-edit {
   background-color: #007bff;
   color: white;
@@ -61,7 +69,8 @@
   background-color: #0056b3;
 }
 
-/* Form Styles */
+/* ========== ESTILOS DE FORMULARIOS ========== */
+/* Compartidos entre AirlineForm y AirlineEdit */
 .airline-form,
 .airline-edit {
   background: #fff;
@@ -100,14 +109,16 @@
 .form-group input:focus {
   outline: none;
   border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* Efecto de foco accesible */
 }
 
 .form-group input:disabled {
   background-color: #e9ecef;
-  cursor: not-allowed;
+  cursor: not-allowed; /* Indica que no es editable */
 }
 
+/* ========== BOTONES DE ACCIÓN ========== */
+/* Botón de enviar/guardar (verde) */
 .btn-submit {
   background-color: #28a745;
   color: white;
@@ -128,6 +139,7 @@
   cursor: not-allowed;
 }
 
+/* Botón de cancelar (rojo) */
 .btn-cancel {
   background-color: #dc3545;
   color: white;
@@ -150,7 +162,8 @@
   margin-top: 15px;
 }
 
-/* Messages */
+/* ========== MENSAJES DE ESTADO ========== */
+/* Mensaje de error (rojo) */
 .error-message {
   color: #dc3545;
   background-color: #f8d7da;
@@ -160,6 +173,7 @@
   margin-bottom: 15px;
 }
 
+/* Mensaje de éxito (verde) */
 .success-message {
   color: #155724;
   background-color: #d4edda;
@@ -169,12 +183,15 @@
   margin-bottom: 15px;
 }
 
+/* ========== ESTADOS DE CARGA Y ERROR ========== */
+/* Indicador de carga */
 .loading {
   text-align: center;
   padding: 40px;
   color: #666;
 }
 
+/* Estado de error con botón de reintentar */
 .error {
   text-align: center;
   padding: 40px;
@@ -191,6 +208,7 @@
   cursor: pointer;
 }
 
+/* Estado de lista vacía */
 .empty {
   text-align: center;
   padding: 40px;

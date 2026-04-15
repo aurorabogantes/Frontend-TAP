@@ -3,23 +3,31 @@ import type { Airline, AirlineFormData } from '../../types';
 import { updateAirline, getAirlineById } from '../../services/api';
 import './Airlines.css';
 
+// Props del componente: aerolínea a editar y callbacks para éxito/cancelación
 interface AirlineEditProps {
-  airline: Airline;
-  onSuccess: () => void;
-  onCancel: () => void;
+  airline: Airline; // Aerolínea seleccionada desde la lista
+  onSuccess: () => void; // Callback cuando se actualiza exitosamente
+  onCancel: () => void; // Callback para cancelar la edición
 }
 
+/**
+ * Componente para editar una aerolínea existente.
+ * Carga datos frescos del servidor al montar y permite modificar nombre y teléfono.
+ */
 function AirlineEdit({ airline, onSuccess, onCancel }: AirlineEditProps) {
+  // Estado del formulario con los datos editables
   const [formData, setFormData] = useState<AirlineFormData>({
     name: '',
     phone: '',
   });
+  // Estados de UI: carga, error y éxito
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  // Efecto: carga datos actualizados del servidor cuando cambia la aerolínea seleccionada
   useEffect(() => {
-    // Cargar datos frescos del servidor usando getAirlineById
+    // Función para obtener datos frescos de la aerolínea por su ID
     const loadAirlineData = async () => {
       try {
         setLoading(true);
@@ -43,19 +51,22 @@ function AirlineEdit({ airline, onSuccess, onCancel }: AirlineEditProps) {
     };
 
     loadAirlineData();
-  }, [airline.id]);
+  }, [airline.id]); // Dependencia: se ejecuta cuando cambia el ID de la aerolínea
 
+  // Manejador genérico de cambios en inputs: actualiza el campo correspondiente en formData
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value, // Actualiza dinámicamente el campo según el atributo "name" del input
     }));
   };
 
+  // Manejador de envío del formulario: valida y envía la actualización al servidor
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Previene recarga de página
     
+    // Validación: nombre es obligatorio
     if (!formData.name.trim()) {
       setError('El nombre es requerido');
       return;
@@ -65,10 +76,11 @@ function AirlineEdit({ airline, onSuccess, onCancel }: AirlineEditProps) {
       setLoading(true);
       setError(null);
       setSuccess(false);
-      await updateAirline(airline.id, formData);
+      await updateAirline(airline.id, formData); // Llama al API para actualizar
       setSuccess(true);
+      // Retraso de 1 segundo para mostrar mensaje de éxito antes de cerrar
       setTimeout(() => {
-        onSuccess();
+        onSuccess(); // Notifica al padre que la edición fue exitosa
       }, 1000);
     } catch (err) {
       setError('Error al actualizar la aerolínea');
