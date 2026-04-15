@@ -1,15 +1,22 @@
 import { FaPlaneDeparture, FaUsers } from 'react-icons/fa';
 import './Home.css';
 
+/**
+ * Página de inicio del sistema.
+ * Muestra información general, características principales y enlace a la documentación.
+ */
 function HomePage() {
   return (
     <div className="home-container">
+      {/* Sección hero: título principal y descripción del sistema */}
       <div className="hero-section">
         <h1>Sistema de Gestión de Aviones</h1>
         <p>Administra aerolíneas y aviones de forma fácil y eficiente</p>
       </div>
       
+      {/* Grid de tarjetas con las características/módulos del sistema */}
       <div className="features-grid">
+        {/* Tarjeta del módulo de Aerolíneas */}
         <div className="feature-card">
           <div className="feature-icon"><FaPlaneDeparture /></div>
           <h3>Aerolíneas</h3>
@@ -21,6 +28,7 @@ function HomePage() {
           </ul>
         </div>
         
+        {/* Tarjeta del módulo de Propietarios */}
         <div className="feature-card">
           <div className="feature-icon"><FaUsers /></div>
           <h3>Propietarios</h3>
@@ -33,6 +41,7 @@ function HomePage() {
         </div>
       </div>
       
+      {/* Información del API con enlace a documentación Swagger */}
       <div className="api-info">
         <h3>API Backend</h3>
         <p>

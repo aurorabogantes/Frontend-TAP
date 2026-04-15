@@ -1,12 +1,20 @@
+/* ====================================================
+   ESTILOS DE LA BARRA DE NAVEGACIÓN (NAVBAR)
+   Incluye: contenedor, marca/logo, enlaces y responsive
+   ==================================================== */
+
+/* ========== CONTENEDOR PRINCIPAL ========== */
+/* Barra horizontal con gradiente azul oscuro */
 .navbar {
-  background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+  background: linear-gradient(135deg, #1a237e 0%, #283593 100%); /* Gradiente índigo */
   padding: 0 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Logo a la izquierda, nav a la derecha */
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombra sutil */
 }
 
+/* ========== MARCA/LOGO ========== */
 .navbar-brand h1 {
   color: white;
   font-size: 1.5rem;
@@ -14,13 +22,15 @@
   padding: 15px 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 10px; /* Espacio entre icono y texto */
 }
 
+/* Icono de avión en el logo */
 .brand-icon {
   font-size: 1.8rem;
 }
 
+/* ========== LISTA DE NAVEGACIÓN ========== */
 .navbar-nav {
   display: flex;
   list-style: none;
@@ -29,27 +39,32 @@
   gap: 5px;
 }
 
+/* ========== ENLACES DE NAVEGACIÓN ========== */
 .nav-link {
   display: block;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.85); /* Blanco semi-transparente */
   text-decoration: none;
   padding: 15px 20px;
   font-weight: 500;
-  transition: all 0.3s ease;
-  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease; /* Transición suave para hover */
+  border-bottom: 3px solid transparent; /* Reserva espacio para indicador activo */
 }
 
+/* Estado hover: fondo ligeramente iluminado */
 .nav-link:hover {
   color: white;
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Estado activo: borde amarillo inferior indica la página actual */
 .nav-link.active {
   color: white;
   background-color: rgba(255, 255, 255, 0.15);
-  border-bottom-color: #ffc107;
+  border-bottom-color: #ffc107; /* Amarillo para indicador de ruta activa */
 }
 
+/* ========== RESPONSIVE: MÓVILES ========== */
+/* En pantallas pequeñas, navbar pasa a layout vertical */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;

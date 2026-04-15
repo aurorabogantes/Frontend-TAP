@@ -1,9 +1,18 @@
+/* ====================================================
+   ESTILOS DE LA PÁGINA DE INICIO (HOME)
+   Incluye: hero section, grid de características,
+   tarjetas de features y sección de info del API
+   ==================================================== */
+
+/* ========== CONTENEDOR PRINCIPAL ========== */
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
 
+/* ========== SECCIÓN HERO ========== */
+/* Banner principal con gradiente y texto centrado */
 .hero-section {
   text-align: center;
   padding: 60px 20px;
@@ -20,9 +29,11 @@
 
 .hero-section p {
   font-size: 1.2rem;
-  opacity: 0.9;
+  opacity: 0.9; /* Ligeramente transparente para jerarquía visual */
 }
 
+/* ========== GRID DE CARACTERÍSTICAS ========== */
+/* Layout responsivo que ajusta columnas según el viewport */
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -30,19 +41,23 @@
   margin-bottom: 40px;
 }
 
+/* ========== TARJETAS DE CARACTERÍSTICAS ========== */
+/* Cada tarjeta representa un módulo del sistema */
 .feature-card {
   background: white;
   border-radius: 12px;
   padding: 30px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave al hover */
 }
 
+/* Efecto de elevación al pasar el mouse */
 .feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px); /* Se eleva 5px */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
 }
 
+/* Icono grande de cada tarjeta */
 .feature-icon {
   font-size: 3rem;
   margin-bottom: 15px;
@@ -73,15 +88,18 @@
 }
 
 .feature-card li:last-child {
-  border-bottom: none;
+  border-bottom: none; /* Sin borde en el último item */
 }
 
+/* Check mark verde antes de cada item de la lista */
 .feature-card li::before {
   content: "✓ ";
   color: #28a745;
   font-weight: bold;
 }
 
+/* ========== SECCIÓN DE INFORMACIÓN DEL API ========== */
+/* Caja con enlace a la documentación Swagger */
 .api-info {
   background: #f8f9fa;
   border-radius: 8px;
