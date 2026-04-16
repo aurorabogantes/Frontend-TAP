@@ -3,20 +3,35 @@ import type { Airplane} from '../../types';
 import { getAirplanes, getAirlines } from '../../services/api';
 import './Airplanes.css';
 
+/**
+ * Props del componente AirplanesList.
+ * @property onSelectAirplane - Callback ejecutado al seleccionar un avión para editar
+ * @property refreshTrigger - Valor numérico que, al cambiar, fuerza la recarga de la lista
+ */
 interface AirplanesListProps {
   onSelectAirplane: (airplane: Airplane) => void;
   refreshTrigger?: number;
 }
-// Cantidad de aviones visibles por página.
 
+/** Cantidad de aviones visibles por página */
 const ITEMS_PER_PAGE = 3;
-// Componente que carga, muestra y pagina el listado de aviones.
 
+/**
+ * Componente que muestra y pagina el listado de aviones.
+ * Carga los aviones y aerolíneas desde la API, y muestra el nombre de la aerolínea asociada.
+ * 
+ * @param props - Props del componente (onSelectAirplane, refreshTrigger)
+ * @returns JSX con la lista paginada de aviones
+ */
 function AirplanesList({ onSelectAirplane, refreshTrigger }: AirplanesListProps) {
+  // Estado principal: lista de aviones
   const [airplanes, setAirplanes] = useState<Airplane[]>([]);
+  // Mapa de ID de aerolínea -> nombre (para mostrar en la lista)
   const [airlines, setAirlines] = useState<Map<number, string>>(new Map());
+  // Estados de UI: carga y error
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // Estado de paginación
   const [currentPage, setCurrentPage] = useState(1);
 
   // Calcula qué registros se muestran en la página actual.
@@ -54,11 +69,12 @@ function AirplanesList({ onSelectAirplane, refreshTrigger }: AirplanesListProps)
     }
   };
 
+  // Estado de loading sin mensaje específico (ya está en UI)
   if (loading) {
     return <div className="loading">Cargando aviones...</div>;
   }
 
-  // Muestra un mensaje si hubo un problema al obtener la información.
+  // Muestra un mensaje con opción de reintentar si hubo error
   if (error) {
     return (
       <div className="error">
@@ -68,7 +84,7 @@ function AirplanesList({ onSelectAirplane, refreshTrigger }: AirplanesListProps)
     );
   }
 
-  // Indica al usuario que todavía no hay registros para mostrar.
+  // Muestra mensaje cuando no hay aviones registrados
   if (airplanes.length === 0) {
     return <div className="empty">No hay aviones registrados</div>;
   }
@@ -77,13 +93,16 @@ function AirplanesList({ onSelectAirplane, refreshTrigger }: AirplanesListProps)
     <div className="airplanes-list">
       <h3>Lista de Aviones</h3>
       
+      {/* Contenedor de tarjetas de aviones (paginadas) */}
       <div className="list-container">
         {paginatedAirplanes.map((airplane) => (
           <div key={airplane.id} className="list-item">
+            {/* Información del avión: modelo y aerolínea */}
             <div className="item-info">
               <strong>Modelo:</strong> {airplane.model || 'N/A'} <br />
               <strong>Aerolínea:</strong> {airlines.get(airplane.airlineId) || 'Desconocida'}
             </div>
+            {/* Botón para seleccionar y editar el avión */}
             <div className="item-actions">
               <button className="btn-edit" onClick={() => onSelectAirplane(airplane)}>
                 Editar
@@ -93,6 +112,7 @@ function AirplanesList({ onSelectAirplane, refreshTrigger }: AirplanesListProps)
         ))}
       </div>
 
+      {/* Controles de paginación (solo si hay más de una página) */}
       {totalPages > 1 && (
         <div className="pagination">
           <button onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 1}>

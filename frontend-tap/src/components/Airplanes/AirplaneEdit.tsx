@@ -3,24 +3,44 @@ import type { Airplane, Airline, AirplaneFormData } from '../../types';
 import { updateAirplane, getAirlines, getAirplaneById } from '../../services/api';
 import './Airplanes.css';
 
+/**
+ * Props del componente AirplaneEdit.
+ * @property airplane - Avión seleccionado para editar
+ * @property onSuccess - Callback cuando la actualización es exitosa
+ * @property onCancel - Callback para cancelar la edición
+ */
 interface AirplaneEditProps {
   airplane: Airplane;
   onSuccess: () => void;
   onCancel: () => void;
 }
 
+/**
+ * Componente para editar un avión existente.
+ * Carga datos frescos del servidor al montar y permite modificar modelo y aerolínea.
+ * 
+ * @param props - Props del componente (airplane, onSuccess, onCancel)
+ * @returns JSX del formulario de edición de avión
+ */
 function AirplaneEdit({ airplane, onSuccess, onCancel }: AirplaneEditProps) {
+  // Estado del formulario con los datos editables
   const [formData, setFormData] = useState<AirplaneFormData>({
     model: airplane.model || '',
     airlineId: airplane.airlineId,
   });
+  // Lista de aerolíneas disponibles para el selector
   const [airlines, setAirlines] = useState<Airline[]>([]);
+  // Estados de UI: carga, error y éxito
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  // Efecto: carga datos actualizados del avión y lista de aerolíneas al montar
   useEffect(() => {
-    // Trae datos frescos del avión para evitar editar información desactualizada.
+    /**
+     * Trae datos frescos del avión desde el servidor
+     * para evitar editar información desactualizada.
+     */
     const loadAirplaneData = async () => {
       try {
         setLoading(true);
@@ -32,6 +52,7 @@ function AirplaneEdit({ airplane, onSuccess, onCancel }: AirplaneEditProps) {
         setError(null);
         setSuccess(false);
       } catch (err) {
+        // Si falla, usar los datos que ya tenemos como fallback
         setFormData({
           model: airplane.model || '',
           airlineId: airplane.airlineId,
@@ -40,7 +61,10 @@ function AirplaneEdit({ airplane, onSuccess, onCancel }: AirplaneEditProps) {
       }
     };
 
-    // Carga las aerolíneas para permitir cambiar el propietario.
+    /**
+     * Carga las aerolíneas disponibles para permitir
+     * cambiar el propietario del avión.
+     */
     const fetchAirlines = async () => {
       try {
         const data = await getAirlines();
@@ -54,7 +78,7 @@ function AirplaneEdit({ airplane, onSuccess, onCancel }: AirplaneEditProps) {
 
     loadAirplaneData();
     fetchAirlines();
-  }, [airplane.id]);
+  }, [airplane.id]); // Dependencia: se ejecuta cuando cambia el ID del avión
 
   // Sincroniza el formulario con los cambios hechos por el usuario.
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -94,6 +118,7 @@ function AirplaneEdit({ airplane, onSuccess, onCancel }: AirplaneEditProps) {
     <div className="airplane-edit">
       <h3>Editar Avión</h3>
       <form onSubmit={handleSubmit}>
+        {/* Campo de modelo del avión */}
         <div className="form-group">
           <label htmlFor="model">Modelo:</label>
           <input
@@ -105,6 +130,7 @@ function AirplaneEdit({ airplane, onSuccess, onCancel }: AirplaneEditProps) {
             disabled={loading}
           />
         </div>
+        {/* Selector de aerolínea propietaria */}
         <div className="form-group">
           <label htmlFor="airlineId">Aerolínea:</label>
           <select
@@ -123,9 +149,11 @@ function AirplaneEdit({ airplane, onSuccess, onCancel }: AirplaneEditProps) {
           </select>
         </div>
         
+        {/* Mensajes de error y éxito */}
         {error && <div className="error-message">{error}</div>}
         {success && <div className="success-message">Avión actualizado exitosamente</div>}
         
+        {/* Grupo de botones: guardar y cancelar */}
         <div className="button-group">
           <button type="submit" className="btn-submit" disabled={loading}>
             {loading ? 'Guardando...' : 'Guardar Cambios'}
